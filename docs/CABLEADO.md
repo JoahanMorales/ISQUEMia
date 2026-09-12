@@ -71,6 +71,62 @@ Tres caminos, de más simple a más correcto:
    marginal: el PCF8574 alimentado a 5 V pide 3.5 V para leer un `1` y le vas a
    dar 3.3 V. Suele funcionar y a veces no. No lo elijas si tienes prisa.
 
+### Los pines 3 y 5 ya tienen el PCA9685: no importa, es un bus
+
+La duda salta sola al ver que los servos ya están en `SDA` y `SCL`. El I²C es
+un **bus**: los dispositivos se cuelgan en paralelo de las mismas dos líneas y
+se distinguen por dirección, no por cable. El PCA9685 contesta en `0x40` y la
+LCD en `0x27`; cuando la Jetson pregunta por uno, el otro se queda callado.
+
+```
+   pin 3 (SDA) ──┬──────────────┬──   ... y los sensores que falten
+                 │              │
+   pin 5 (SCL) ──┼──┬───────────┼──┬──
+                 │  │           │  │
+              ┌──┴──┴──┐     ┌──┴──┴──┐
+              │PCA9685 │     │  LCD   │
+              │  0x40  │     │  0x27  │
+              └────────┘     └────────┘
+```
+
+**La forma cómoda de hacerlo:** casi todos los módulos PCA9685 traen los pines
+I²C **duplicados en el borde opuesto** de la placa, justamente para encadenar.
+Si el tuyo tiene un segundo juego `GND / OE / SCL / SDA / VCC`, saca de ahí los
+cuatro cables de la LCD y no tocas el header de la Jetson.
+
+Ese `VCC` duplicado es el de la **lógica** del PCA9685 (3.3 V, el que viene de
+la Jetson), no el `V+` de la fuente de los servos. Eso te conviene: es la misma
+opción 1 de la advertencia de voltaje, sin el problema de los pull-ups.
+
+Si tu módulo no los trae duplicados, haz un empalme: dos cables al pin 3 y dos
+al pin 5, con protoboard o con Dupont hembra-hembra encadenados.
+
+Lo único a cuidar: **que no se repitan direcciones** (`0x40` y `0x27` no chocan)
+y que no acumules demasiados pull-ups en paralelo — cada módulo trae los suyos
+y la resistencia efectiva baja al juntarlos. Con dos o tres dispositivos es
+irrelevante; a partir de cinco o seis empieza a notarse.
+
+### Alimentar la LCD desde la fuente de los servos
+
+Si en vez de los 3.3 V de la Jetson quieres colgar la LCD de la fuente externa
+que ya alimenta los servos:
+
+- **La masa tiene que ser común.** Un cable del negativo de la fuente a
+  cualquier GND del header (6, 9, 14, 20, 25, 30, 34, 39). Sin eso el I²C no
+  tiene referencia y el bus falla de forma intermitente, que es peor que no
+  funcionar: parece un problema de software.
+- **Mide la fuente antes de conectar.** Muchas fuentes de servos son de 6 V y
+  la 1602A quiere 5 V ±10 %. Con 6 V la dañas.
+- **Sigue aplicando lo de los pull-ups:** con `VCC` a 5 V necesitas el
+  convertidor de nivel de la opción 2, o quitar `R8`/`R9` como en la opción 3.
+- **Enciende primero la Jetson.** Con la LCD alimentada y la Jetson apagada,
+  los pull-ups a 5 V inyectan corriente en los pines del SoC apagado. Con el
+  convertidor de nivel esto deja de importar.
+
+Un punto de conexión cómodo para la fuente: los tres pines de cualquier canal
+libre del PCA9685 (el 15, por ejemplo) ya traen `V+` y `GND` de la fuente, así
+te ahorras el empalme.
+
 #### Comprobación
 
 ```bash
