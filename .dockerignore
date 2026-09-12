@@ -1,0 +1,7 @@
+node_modules
+.next
+.git
+.env.local
+*.log
+tsconfig.tsbuildinfo
+Gemini_Generated_Image_*.jpg

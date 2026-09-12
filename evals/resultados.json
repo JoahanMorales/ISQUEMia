@@ -1,0 +1,944 @@
+{
+  "generado": "2026-09-12T22:00:51.646Z",
+  "semillas": 10,
+  "bloqueantes": [
+    "M5",
+    "M6",
+    "M9"
+  ],
+  "metas": {
+    "M1_minimo_h": 3,
+    "M2_maxFraccionBaseline": 0.25,
+    "M3_minimo": 0.6,
+    "M5_minimo": 0.95,
+    "M6_minimo": 0.98,
+    "M7_p95_max_ms": 8000,
+    "M9_minimo": 1
+  },
+  "aprobado": true,
+  "agregado": {
+    "M1_medio_comparables": 4.643,
+    "M1_comparables": 3,
+    "M3_medio": 0.493,
+    "M5_min": 1,
+    "M6_min": 1,
+    "M9_min": 1,
+    "M8_total": 0.0037,
+    "colocadas": 10,
+    "baselineColoco": 3,
+    "organosSalvados": 7,
+    "mejorQueBaseline": 0
+  },
+  "filas": [
+    {
+      "semilla": "S-001",
+      "corridaId": "run-S-001",
+      "organo": "higado",
+      "via": "DBD",
+      "fase": "terminada",
+      "secuenciaAgente": 15,
+      "secuenciaBaseline": 3,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 3,
+      "citAgente_h": null,
+      "citBaseline_h": 11.953617523256689,
+      "degradaciones": 5,
+      "provisionalYes": 8,
+      "horasProtegidas": 7.5,
+      "eventos": 461,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 5.48,
+        "M2_tiempoPrimerCompromiso_s": 238,
+        "M2_fraccionDelBaseline": 0.054,
+        "M3_provisionalYesInterceptados": 5,
+        "M3_provisionalYesTotales": 8,
+        "M3_tasa": 0.625,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 3,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 1.5,
+        "M7_latenciaCarril_p95_ms": 2.4,
+        "M8_costoPorColocacionUSD": 0.0004,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": true,
+          "valor": 5.48,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": true,
+          "valor": 0.054,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": true,
+          "valor": 0.625,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": false,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 2.4,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0004,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 20
+    },
+    {
+      "semilla": "S-002",
+      "corridaId": "run-S-002",
+      "organo": "higado",
+      "via": "DBD",
+      "fase": "terminada",
+      "secuenciaAgente": 11,
+      "secuenciaBaseline": null,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 40,
+      "citAgente_h": null,
+      "citBaseline_h": null,
+      "degradaciones": 7,
+      "provisionalYes": 13,
+      "horasProtegidas": 10.5,
+      "eventos": 557,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 0,
+        "M2_tiempoPrimerCompromiso_s": 406,
+        "M2_fraccionDelBaseline": null,
+        "M3_provisionalYesInterceptados": 7,
+        "M3_provisionalYesTotales": 13,
+        "M3_tasa": 0.538,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 40,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 0.5,
+        "M7_latenciaCarril_p95_ms": 0.8,
+        "M8_costoPorColocacionUSD": 0.0003,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": false,
+          "valor": 0,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": false,
+          "valor": null,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": false,
+          "valor": 0.538,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": true,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 0.8,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0003,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 7
+    },
+    {
+      "semilla": "S-003",
+      "corridaId": "run-S-003",
+      "organo": "higado",
+      "via": "DBD",
+      "fase": "terminada",
+      "secuenciaAgente": 6,
+      "secuenciaBaseline": 6,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 6,
+      "citAgente_h": null,
+      "citBaseline_h": 8.666437969497265,
+      "degradaciones": 3,
+      "provisionalYes": 13,
+      "horasProtegidas": 4.5,
+      "eventos": 486,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 4.26,
+        "M2_tiempoPrimerCompromiso_s": 210,
+        "M2_fraccionDelBaseline": 0.047,
+        "M3_provisionalYesInterceptados": 3,
+        "M3_provisionalYesTotales": 13,
+        "M3_tasa": 0.231,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 6,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 0.5,
+        "M7_latenciaCarril_p95_ms": 0.8,
+        "M8_costoPorColocacionUSD": 0.0003,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": true,
+          "valor": 4.26,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": true,
+          "valor": 0.047,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": false,
+          "valor": 0.231,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": false,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 0.8,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0003,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 5
+    },
+    {
+      "semilla": "S-004",
+      "corridaId": "run-S-004",
+      "organo": "higado",
+      "via": "DBD",
+      "fase": "terminada",
+      "secuenciaAgente": 11,
+      "secuenciaBaseline": null,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 40,
+      "citAgente_h": null,
+      "citBaseline_h": null,
+      "degradaciones": 2,
+      "provisionalYes": 4,
+      "horasProtegidas": 3,
+      "eventos": 507,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 0,
+        "M2_tiempoPrimerCompromiso_s": 250,
+        "M2_fraccionDelBaseline": null,
+        "M3_provisionalYesInterceptados": 2,
+        "M3_provisionalYesTotales": 4,
+        "M3_tasa": 0.5,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 40,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 0.3,
+        "M7_latenciaCarril_p95_ms": 0.7,
+        "M8_costoPorColocacionUSD": 0.0004,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": false,
+          "valor": 0,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": false,
+          "valor": null,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": false,
+          "valor": 0.5,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": true,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 0.7,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0004,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 10
+    },
+    {
+      "semilla": "S-005",
+      "corridaId": "run-S-005",
+      "organo": "higado",
+      "via": "DCD",
+      "fase": "terminada",
+      "secuenciaAgente": 3,
+      "secuenciaBaseline": null,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 40,
+      "citAgente_h": null,
+      "citBaseline_h": null,
+      "degradaciones": 7,
+      "provisionalYes": 13,
+      "horasProtegidas": 10.5,
+      "eventos": 579,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 0,
+        "M2_tiempoPrimerCompromiso_s": 439,
+        "M2_fraccionDelBaseline": null,
+        "M3_provisionalYesInterceptados": 7,
+        "M3_provisionalYesTotales": 13,
+        "M3_tasa": 0.538,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 40,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 0.6,
+        "M7_latenciaCarril_p95_ms": 0.8,
+        "M8_costoPorColocacionUSD": 0.0004,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": false,
+          "valor": 0,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": false,
+          "valor": null,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": false,
+          "valor": 0.538,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": true,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 0.8,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0004,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 5
+    },
+    {
+      "semilla": "S-006",
+      "corridaId": "run-S-006",
+      "organo": "higado",
+      "via": "DBD",
+      "fase": "terminada",
+      "secuenciaAgente": 29,
+      "secuenciaBaseline": null,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 40,
+      "citAgente_h": null,
+      "citBaseline_h": null,
+      "degradaciones": 8,
+      "provisionalYes": 10,
+      "horasProtegidas": 12,
+      "eventos": 554,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 0,
+        "M2_tiempoPrimerCompromiso_s": 717,
+        "M2_fraccionDelBaseline": null,
+        "M3_provisionalYesInterceptados": 8,
+        "M3_provisionalYesTotales": 10,
+        "M3_tasa": 0.8,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 40,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 0.4,
+        "M7_latenciaCarril_p95_ms": 0.6,
+        "M8_costoPorColocacionUSD": 0.0004,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": false,
+          "valor": 0,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": false,
+          "valor": null,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": true,
+          "valor": 0.8,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": true,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 0.6,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0004,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 6
+    },
+    {
+      "semilla": "S-007",
+      "corridaId": "run-S-007",
+      "organo": "higado",
+      "via": "DBD",
+      "fase": "terminada",
+      "secuenciaAgente": 26,
+      "secuenciaBaseline": null,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 40,
+      "citAgente_h": null,
+      "citBaseline_h": null,
+      "degradaciones": 7,
+      "provisionalYes": 11,
+      "horasProtegidas": 10.5,
+      "eventos": 566,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 0,
+        "M2_tiempoPrimerCompromiso_s": 229,
+        "M2_fraccionDelBaseline": null,
+        "M3_provisionalYesInterceptados": 7,
+        "M3_provisionalYesTotales": 11,
+        "M3_tasa": 0.636,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 40,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 0.3,
+        "M7_latenciaCarril_p95_ms": 0.6,
+        "M8_costoPorColocacionUSD": 0.0004,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": false,
+          "valor": 0,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": false,
+          "valor": null,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": true,
+          "valor": 0.636,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": true,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 0.6,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0004,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 7
+    },
+    {
+      "semilla": "S-008",
+      "corridaId": "run-S-008",
+      "organo": "higado",
+      "via": "DBD",
+      "fase": "terminada",
+      "secuenciaAgente": 16,
+      "secuenciaBaseline": null,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 40,
+      "citAgente_h": null,
+      "citBaseline_h": null,
+      "degradaciones": 6,
+      "provisionalYes": 13,
+      "horasProtegidas": 9,
+      "eventos": 585,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 0,
+        "M2_tiempoPrimerCompromiso_s": 229,
+        "M2_fraccionDelBaseline": null,
+        "M3_provisionalYesInterceptados": 6,
+        "M3_provisionalYesTotales": 13,
+        "M3_tasa": 0.462,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 40,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 0.5,
+        "M7_latenciaCarril_p95_ms": 0.7,
+        "M8_costoPorColocacionUSD": 0.0003,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": false,
+          "valor": 0,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": false,
+          "valor": null,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": false,
+          "valor": 0.462,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": true,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 0.7,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0003,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 5
+    },
+    {
+      "semilla": "S-009",
+      "corridaId": "run-S-009",
+      "organo": "higado",
+      "via": "DBD",
+      "fase": "terminada",
+      "secuenciaAgente": 3,
+      "secuenciaBaseline": null,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 40,
+      "citAgente_h": null,
+      "citBaseline_h": null,
+      "degradaciones": 1,
+      "provisionalYes": 10,
+      "horasProtegidas": 1.5,
+      "eventos": 520,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 0,
+        "M2_tiempoPrimerCompromiso_s": 137,
+        "M2_fraccionDelBaseline": null,
+        "M3_provisionalYesInterceptados": 1,
+        "M3_provisionalYesTotales": 10,
+        "M3_tasa": 0.1,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 40,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 0.4,
+        "M7_latenciaCarril_p95_ms": 0.5,
+        "M8_costoPorColocacionUSD": 0.0004,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": false,
+          "valor": 0,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": false,
+          "valor": null,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": false,
+          "valor": 0.1,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": true,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 0.5,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0004,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 5
+    },
+    {
+      "semilla": "S-010",
+      "corridaId": "run-S-010",
+      "organo": "higado",
+      "via": "DBD",
+      "fase": "terminada",
+      "secuenciaAgente": 6,
+      "secuenciaBaseline": 6,
+      "ofertasAgente": 40,
+      "ofertasBaseline": 6,
+      "citAgente_h": null,
+      "citBaseline_h": 10.335563887497727,
+      "degradaciones": 3,
+      "provisionalYes": 6,
+      "horasProtegidas": 4.5,
+      "eventos": 436,
+      "metricas": {
+        "M1_horasIsquemiaAhorradas": 4.19,
+        "M2_tiempoPrimerCompromiso_s": 273,
+        "M2_fraccionDelBaseline": 0.064,
+        "M3_provisionalYesInterceptados": 3,
+        "M3_provisionalYesTotales": 6,
+        "M3_tasa": 0.5,
+        "M4_ofertasPorColocacion": 40,
+        "M4_ofertasBaseline": 6,
+        "M5_tasaCompletitudCarril": 1,
+        "M6_precisionUsoHerramientas": 1,
+        "M7_latenciaCarril_p50_ms": 0.3,
+        "M7_latenciaCarril_p95_ms": 0.5,
+        "M8_costoPorColocacionUSD": 0.0004,
+        "M9_tasaCitacion": 1
+      },
+      "metas": [
+        {
+          "metrica": "M1",
+          "cumple": true,
+          "valor": 4.19,
+          "meta": "> 3 h"
+        },
+        {
+          "metrica": "M2",
+          "cumple": true,
+          "valor": 0.064,
+          "meta": "< 25 % del baseline"
+        },
+        {
+          "metrica": "M3",
+          "cumple": false,
+          "valor": 0.5,
+          "meta": "> 0.60"
+        },
+        {
+          "metrica": "M4",
+          "cumple": false,
+          "valor": 40,
+          "meta": "≤ baseline"
+        },
+        {
+          "metrica": "M5",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.95"
+        },
+        {
+          "metrica": "M6",
+          "cumple": true,
+          "valor": 1,
+          "meta": "> 0.98"
+        },
+        {
+          "metrica": "M7",
+          "cumple": true,
+          "valor": 0.5,
+          "meta": "p95 < 8 s"
+        },
+        {
+          "metrica": "M8",
+          "cumple": true,
+          "valor": 0.0004,
+          "meta": "reportar"
+        },
+        {
+          "metrica": "M9",
+          "cumple": true,
+          "valor": 1,
+          "meta": "= 1.00"
+        }
+      ],
+      "bloqueantesEnMeta": true,
+      "ms": 5
+    }
+  ]
+}

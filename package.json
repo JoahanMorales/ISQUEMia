@@ -1,0 +1,37 @@
+{
+  "name": "isquemia",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint:reloj": "node scripts/lint-reloj.mjs",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint:reloj && npm run lint:capas && npm run typecheck && npm run test && npm run evals",
+    "lint:capas": "node scripts/lint-capas.mjs",
+    "evals": "tsx scripts/evals.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0"
+  },
+  "dependencies": {
+    "@ag-ui/client": "^0.0.59",
+    "@ag-ui/core": "^0.0.59",
+    "@copilotkit/react-core": "^1.71.1",
+    "@copilotkit/runtime": "^1.71.1",
+    "next": "^16.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "rxjs": "^7.8.1",
+    "zod": "^4.6.2"
+  }
+}

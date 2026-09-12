@@ -1,5 +1,21 @@
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+dist/
+.env*
+!.env.example
+*.tsbuildinfo
+.ambi/
+
+# --- Python / la caja ---
 __pycache__/
 *.pyc
-eventos.jsonl
-caja/rostros.json
-caja/modelos/sface.onnx
+
+# --- Artefactos de corrida del dispositivo ---
+eventos.jsonl          # auditoría local de cada corrida
+caja/rostros.json      # vectores faciales registrados: datos biométricos
+caja/modelos/sface.onnx  # 37 MB, se descarga con el comando del README
+
+# --- Sistema ---
+.DS_Store
