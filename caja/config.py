@@ -56,17 +56,46 @@ LCD_SEGUNDOS_POR_PANTALLA = 3.0   # rotacion del carrusel de informacion
 # ---------------------------------------------------------------------------
 # 3. Servos (pestillo de la caja)
 # ---------------------------------------------------------------------------
-# El PCA9685 ya esta montado y respondiendo en 0x40. Los canales 0 y 1 son los
-# del pan-tilt existente; se reutilizan como "tapa" para la demo.
+# El PCA9685 ya esta montado y respondiendo en 0x40.
+#
+# OJO CON LOS CANALES 0 Y 1: son el pan-tilt donde va montada la camara, no
+# servos libres. Usarlos como pestillo apunta la camara al techo y la deja
+# ciega justo cuando tiene que identificar al receptor. El pestillo y la tapa
+# van en canales aparte.
 SERVO_I2C_DIR = 0x40
-SERVO_CANAL_PESTILLO = 0      # servo que libera el seguro
-SERVO_CANAL_TAPA = 1          # servo que levanta la tapa
+SERVO_CANAL_PAN = 0           # camara: giro horizontal
+SERVO_CANAL_TILT = 1          # camara: inclinacion
+SERVO_PAN_REPOSO = 90         # posicion de descanso del pan-tilt
+SERVO_TILT_REPOSO = 90
+SERVO_PULSO_PAN = (500, 2380)   # rangos calibrados del pan-tilt existente
+SERVO_PULSO_TILT = (520, 2450)
+
+# Con solo dos servos montados (el pan-tilt), no hay canales libres para un
+# pestillo aparte. Con esto en True la caja reutiliza el pan-tilt para el gesto
+# de apertura, pero su posicion "cerrada" es el reposo con la camara al frente:
+# asi ve bien durante la identificacion y solo se mueve DESPUES de autorizar,
+# cuando ya no necesita ver. Ponlo en False cuando montes servos propios.
+SERVO_USAR_PANTILT_COMO_TAPA = os.environ.get("ISQ_PANTILT_TAPA", "1") == "1"
+
+if SERVO_USAR_PANTILT_COMO_TAPA:
+    SERVO_CANAL_PESTILLO = 0
+    SERVO_CANAL_TAPA = 1
+else:
+    SERVO_CANAL_PESTILLO = 2  # servo que libera el seguro
+    SERVO_CANAL_TAPA = 3      # servo que levanta la tapa
 SERVO_PULSO_US = (500, 2380)  # rango de pulso calibrado del pan-tilt existente
 
-SERVO_ANG_CERRADO = 20        # pestillo echado
-SERVO_ANG_ABIERTO = 160       # pestillo liberado
-SERVO_ANG_TAPA_ABAJO = 15
-SERVO_ANG_TAPA_ARRIBA = 110
+if SERVO_USAR_PANTILT_COMO_TAPA:
+    # "Cerrado" = pan-tilt en reposo, camara mirando al frente.
+    SERVO_ANG_CERRADO = 90
+    SERVO_ANG_ABIERTO = 150       # gira, gesto de liberar
+    SERVO_ANG_TAPA_ABAJO = 90
+    SERVO_ANG_TAPA_ARRIBA = 30    # levanta la camara: la tapa se abre
+else:
+    SERVO_ANG_CERRADO = 20        # pestillo echado
+    SERVO_ANG_ABIERTO = 160       # pestillo liberado
+    SERVO_ANG_TAPA_ABAJO = 15
+    SERVO_ANG_TAPA_ARRIBA = 110
 SERVO_VELOCIDAD_GRADOS_S = 90 # movimiento suave, no de golpe
 
 # ---------------------------------------------------------------------------

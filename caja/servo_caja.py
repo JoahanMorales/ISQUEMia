@@ -2,8 +2,12 @@
 """Pestillo y tapa de la caja, sobre el PCA9685 ya montado (i2c-7, 0x40).
 
 Dos servos:
-  canal 0 -> pestillo: el seguro que impide levantar la tapa
-  canal 1 -> tapa:     el brazo que la levanta
+  canal 2 -> pestillo: el seguro que impide levantar la tapa
+  canal 3 -> tapa:     el brazo que la levanta
+
+Los canales 0 y 1 NO se tocan aqui: son el pan-tilt de la camara. Moverlos
+como si fueran el pestillo la deja mirando al techo, ciega para identificar
+al receptor. Para apuntarla esta la clase PanTiltCamara, mas abajo.
 
 Regla de la caja (ISQUEMIA.md 13.2): el pestillo SOLO cede tras un traspaso
 verificado, y cada apertura queda como evento de custodia autenticado. El
@@ -120,3 +124,37 @@ class PestilloCaja:
                     self.kit.servo[canal].angle = None   # deja de dar par
             except Exception:
                 pass
+
+
+class PanTiltCamara:
+    """Los canales 0 y 1: orientan la camara, no abren nada.
+
+    Se separa del pestillo a proposito. Al terminar cualquier corrida hay que
+    llamar a reposo(): una camara que se queda apuntando al techo no falla
+    ruidosamente, simplemente deja de ver, y eso cuesta encontrarlo.
+    """
+
+    def __init__(self):
+        self.real = False
+        try:
+            from adafruit_servokit import ServoKit
+            self.kit = ServoKit(channels=16, address=config.SERVO_I2C_DIR)
+            self.kit.servo[config.SERVO_CANAL_PAN].set_pulse_width_range(
+                *config.SERVO_PULSO_PAN)
+            self.kit.servo[config.SERVO_CANAL_TILT].set_pulse_width_range(
+                *config.SERVO_PULSO_TILT)
+            self.real = True
+        except Exception as e:
+            self.kit = None
+            print("[pantilt] sin hardware: %s" % e)
+
+    def apuntar(self, pan=None, tilt=None):
+        if not self.real:
+            return
+        if pan is not None:
+            self.kit.servo[config.SERVO_CANAL_PAN].angle = max(0, min(180, int(pan)))
+        if tilt is not None:
+            self.kit.servo[config.SERVO_CANAL_TILT].angle = max(0, min(180, int(tilt)))
+
+    def reposo(self):
+        self.apuntar(config.SERVO_PAN_REPOSO, config.SERVO_TILT_REPOSO)

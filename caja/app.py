@@ -34,7 +34,7 @@ from .eventos import BusEventos
 from .lcd1602 import LCD1602
 from .reloj_isquemia import RelojIsquemia
 from .sensores import BancoSensores
-from .servo_caja import PestilloCaja
+from .servo_caja import PanTiltCamara, PestilloCaja
 
 
 class CajaISQUEMIA:
@@ -55,6 +55,8 @@ class CajaISQUEMIA:
         self.reloj = RelojIsquemia(args.organo, factor=args.factor, bus=self.bus)
         self.sensores = BancoSensores(bus=self.bus, semilla=args.semilla)
         self.pestillo = PestilloCaja(bus=self.bus)
+        self.pantilt = PanTiltCamara()
+        self.pantilt.reposo()   # que la camara mire al frente, no al techo
 
         self.caso = {
             "id": args.caso,
@@ -251,6 +253,7 @@ class CajaISQUEMIA:
             self.lcd.cerrar()
         except Exception:
             pass
+        self.pantilt.reposo()
         self.pestillo.liberar()
         print("  eventos en %s (%d registrados)"
               % (self.bus.archivo, len(self.bus.leer())))
