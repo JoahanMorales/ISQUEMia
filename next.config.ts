@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
-  // Cloud Run: imagen mínima con el servidor Node autocontenido (Fase 7).
-  output: "standalone",
+  // Cloud Run necesita el servidor Node autocontenido en .next/standalone para
+  // meterlo en la imagen (ver Dockerfile). Vercel hace su propio empaquetado y
+  // con "standalone" no encuentra la estructura que espera: cae al modo de
+  // sitio estatico y falla pidiendo un directorio "public". Se activa solo
+  // fuera de Vercel, asi los dos despliegues conviven.
+  output: process.env.VERCEL ? undefined : "standalone",
   // El motor de simulación vive en memoria del servidor: una sola instancia.
   serverExternalPackages: ["@copilotkit/runtime"],
   typedRoutes: false,
