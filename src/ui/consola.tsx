@@ -22,6 +22,9 @@ import { Expediente, TarjetaExpediente } from "./pantallas/expediente";
 import { Metricas } from "./pantallas/metricas";
 import { PanelWorkspace } from "./pantallas/workspace";
 
+/** Ancho del chat lateral. El panel cede exactamente esto, ni un píxel más. */
+const ANCHO_COPILOTO = 360;
+
 export type Pestana = "sala" | "referral" | "transporte" | "expediente" | "metricas" | "workspace";
 
 export function Consola() {
@@ -321,9 +324,25 @@ export function Consola() {
     [arrancarStream],
   );
 
-  // El copiloto conversacional solo existe si hay credencial de modelo. Sin
-  // ella el panel funciona igual y el hueco se explica en vez de quedar vacío.
-  const hayCopiloto = Boolean(estado?.adaptadores?.find((a) => a.slot === "LLM_NEGOCIACION")?.remoto);
+  // Si el copiloto existe no lo decide una insignia, lo decide el runtime: se
+  // pregunta por los agentes registrados. Con credencial de modelo hay
+  // `copiloto`; sin ella no, y entonces no se pinta un chat que solo podría dar
+  // error. Arranca cerrado: el panel es la demo, el chat es opcional.
+  const [hayCopiloto, setHayCopiloto] = useState(false);
+  const [copilotoAbierto, setCopilotoAbierto] = useState(false);
+
+  useEffect(() => {
+    let vivo = true;
+    void fetch("/api/copilotkit/info")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j: { agents?: Record<string, unknown> } | null) => {
+        if (vivo) setHayCopiloto(Boolean(j?.agents?.copiloto));
+      })
+      .catch(() => {});
+    return () => {
+      vivo = false;
+    };
+  }, []);
 
   if (!estado?.organo || !estado.carriles) {
     return (
@@ -342,7 +361,7 @@ export function Consola() {
   }
 
   return (
-    <div className="app" style={{ paddingRight: hayCopiloto ? 380 : 0 }}>
+    <div className="app" style={{ paddingRight: hayCopiloto && copilotoAbierto ? ANCHO_COPILOTO : 0 }}>
       <Cabecera
         estado={estado}
         pestana={pestana}
@@ -388,9 +407,13 @@ export function Consola() {
       {pestana === "workspace" && <PanelWorkspace estado={estado} />}
 
       {hayCopiloto && (
-        <div className="copilot-slot">
-          <CopilotSidebar defaultOpen agentId="copiloto" header={{ title: "Operations copilot" } as never} />
-        </div>
+        <CopilotSidebar
+          agentId="copiloto"
+          open={copilotoAbierto}
+          onOpenChange={setCopilotoAbierto}
+          width={ANCHO_COPILOTO}
+          header={{ title: "Operations copilot" } as never}
+        />
       )}
     </div>
   );

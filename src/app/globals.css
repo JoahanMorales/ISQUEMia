@@ -67,9 +67,15 @@ a { color: var(--info); }
   padding: 12px 20px 0;
 }
 
-.cab-fila { display: flex; align-items: flex-start; gap: 28px; }
+.cab-fila { display: flex; align-items: flex-start; gap: 28px; flex-wrap: wrap; }
 
-.reloj-bloque { min-width: 300px; }
+/* Con el chat lateral abierto la cabecera se estrecha, y antes los controles
+   del reloj quedaban cortados a media palabra. Ahora el bloque del reloj cede
+   ancho y los controles se envuelven en vez de desbordarse. */
+.reloj-bloque { flex: 1 1 260px; }
+.controles { flex-wrap: wrap; }
+
+.reloj-bloque { min-width: 260px; }
 .reloj-etiqueta {
   font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--texto-3); font-weight: 600; margin-bottom: 2px;
@@ -118,7 +124,16 @@ a { color: var(--info); }
 
 /* ─────────────────────────────────────────────── pestañas */
 
-.tabs { display: flex; gap: 2px; margin-top: 12px; }
+/* Las pestañas y las insignias de adaptador no caben cuando la ventana se
+   estrecha. Antes se partían en dos líneas y se solapaban con el contenido;
+   ahora la fila se desplaza en horizontal y cada pestaña se mantiene entera. */
+.tabs {
+  display: flex; gap: 2px; margin-top: 12px;
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: thin;
+}
+.tabs::-webkit-scrollbar { height: 6px; }
+.tab { white-space: nowrap; flex: 0 0 auto; }
 .tab {
   border: none; background: none; padding: 9px 14px; font-size: 13px;
   color: var(--texto-2); border-bottom: 2px solid transparent; border-radius: 0;
@@ -281,4 +296,6 @@ a { color: var(--info); }
 .dl dt { color: var(--texto-3); }
 .dl dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
-.copilot-slot { position: fixed; right: 0; top: 0; bottom: 0; width: 380px; z-index: 30; }
+/* El chat lateral se posiciona solo; aquí únicamente se le acota el ancho para
+   que no se coma media pantalla, y se le deja sitio a la cabecera. */
+[data-copilot-sidebar], .copilotkit-sidebar { max-width: 360px; }

@@ -1,5 +1,5 @@
 {
-  "generado": "2026-09-12T22:50:02.969Z",
+  "generado": "2026-09-12T22:56:53.412Z",
   "semillas": 10,
   "bloqueantes": [
     "M5",
@@ -119,7 +119,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 21
+      "ms": 20
     },
     {
       "semilla": "S-002",
@@ -239,8 +239,8 @@
         "M4_ofertasBaseline": 6,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.5,
-        "M7_latenciaCarril_p95_ms": 0.8,
+        "M7_latenciaCarril_p50_ms": 0.6,
+        "M7_latenciaCarril_p95_ms": 1.2,
         "M8_costoPorColocacionUSD": 0.0003,
         "M9_tasaCitacion": 1
       },
@@ -284,7 +284,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.8,
+          "valor": 1.2,
           "meta": "p95 < 8 s"
         },
         {
@@ -331,7 +331,7 @@
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
         "M7_latenciaCarril_p50_ms": 0.4,
-        "M7_latenciaCarril_p95_ms": 0.8,
+        "M7_latenciaCarril_p95_ms": 0.7,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
       },
@@ -375,7 +375,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.8,
+          "valor": 0.7,
           "meta": "p95 < 8 s"
         },
         {
@@ -392,7 +392,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 7
+      "ms": 9
     },
     {
       "semilla": "S-005",
@@ -421,7 +421,7 @@
         "M4_ofertasBaseline": 40,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.5,
+        "M7_latenciaCarril_p50_ms": 0.6,
         "M7_latenciaCarril_p95_ms": 0.8,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
@@ -483,7 +483,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 9
+      "ms": 5
     },
     {
       "semilla": "S-006",
@@ -512,7 +512,7 @@
         "M4_ofertasBaseline": 40,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.3,
+        "M7_latenciaCarril_p50_ms": 0.4,
         "M7_latenciaCarril_p95_ms": 0.6,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
@@ -574,7 +574,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 4
+      "ms": 6
     },
     {
       "semilla": "S-007",
@@ -756,7 +756,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 5
+      "ms": 6
     },
     {
       "semilla": "S-009",
@@ -847,7 +847,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 6
+      "ms": 5
     },
     {
       "semilla": "S-010",
@@ -938,7 +938,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 5
+      "ms": 4
     }
   ]
 }
