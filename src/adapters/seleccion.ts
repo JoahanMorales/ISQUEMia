@@ -19,6 +19,16 @@ export interface Entorno {
   AUTH0_CLIENT_SECRET?: string;
   TRIGGER_SECRET_KEY?: string;
   DATABASE_URL?: string;
+  /**
+   * Modelo del copiloto conversacional, con prefijo de proveedor:
+   * `openai:gpt-5.4-mini` o `openrouter:dots-studio/dots-3-note-preview:free`.
+   * Existe porque una cuenta puede tener llave válida y cero saldo: así se
+   * mueve el copiloto a un modelo gratuito sin tocar código.
+   */
+  COPILOTO_MODELO?: string;
+  /** Igual, para los slots de dominio. Ver `composicion.ts`. */
+  MODELO_TRIAGE?: string;
+  MODELO_NEGOCIACION?: string;
 }
 
 export function leerEntorno(env: Record<string, string | undefined> = process.env): Entorno {
@@ -37,6 +47,9 @@ export function leerEntorno(env: Record<string, string | undefined> = process.en
     AUTH0_CLIENT_SECRET: tomar("AUTH0_CLIENT_SECRET"),
     TRIGGER_SECRET_KEY: tomar("TRIGGER_SECRET_KEY"),
     DATABASE_URL: tomar("DATABASE_URL"),
+    COPILOTO_MODELO: tomar("COPILOTO_MODELO"),
+    MODELO_TRIAGE: tomar("MODELO_TRIAGE"),
+    MODELO_NEGOCIACION: tomar("MODELO_NEGOCIACION"),
   };
 }
 

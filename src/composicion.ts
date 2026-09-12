@@ -105,6 +105,14 @@ export function crearCorrida(opciones: OpcionesCorrida): Corrida {
           apiKey: (entorno.OPENAI_API_KEY ?? entorno.OPENROUTER_API_KEY)!,
           baseUrl: entorno.OPENAI_API_KEY ? undefined : "https://openrouter.ai/api/v1",
           cache: opciones.cacheLlm,
+          // Permite mover un slot a otro modelo —por ejemplo uno gratuito de
+          // OpenRouter— sin tocar dominio. Ojo con el triaje: los gratuitos
+          // que probamos validan contra el esquema pero aciertan menos códigos
+          // OPTN que las reglas, y un código equivocado se ve en el panel.
+          modelos: {
+            ...(entorno.MODELO_TRIAGE ? { triage: entorno.MODELO_TRIAGE } : {}),
+            ...(entorno.MODELO_NEGOCIACION ? { negociacion: entorno.MODELO_NEGOCIACION } : {}),
+          },
         })
       : new RouterLocal();
   const triage = {

@@ -95,6 +95,13 @@ export interface OpcionesLlmRemoto {
   apiKey: string;
   baseUrl?: string;
   cache: CacheLlm;
+  /**
+   * Techo de tokens de salida. Importa por dos razones: los modelos de
+   * razonamiento gastan el presupuesto pensando y se quedan sin responder si es
+   * corto, y una cuenta con saldo mínimo recibe un 402 si se pide el máximo del
+   * modelo. 2000 deja terminar a los que razonan sin pedir de más.
+   */
+  maxTokens?: number;
   /** Se llama con cada entrada que faltó en caché, para poder precalentarla. */
   alFallarCache?: (peticion: { messages: Mensaje[]; schema?: Record<string, unknown> }) => void;
 }
@@ -112,15 +119,22 @@ export class LlmRemoto implements Llm {
     this.modelo = opciones.modelo;
   }
 
+  /**
+   * Traduce el identificador del slot al que quiere la API.
+   *
+   * Un identificador con `/` ya es de OpenRouter (`liquid/lfm-2.5-2.6b:free`) y
+   * va tal cual: ojo, su `:free` es parte del nombre, no un prefijo de
+   * proveedor. Sin `/` es estilo OpenAI, opcionalmente con prefijo `openai:`,
+   * y al llamar a OpenRouter hay que anteponerle el proveedor.
+   */
   get modeloApi(): string {
-    const pelado = this.modelo.includes(":") ? this.modelo.slice(this.modelo.indexOf(":") + 1) : this.modelo;
-    // OpenRouter nombra los modelos `proveedor/modelo`; la API de OpenAI los
-    // quiere pelados. El slot los guarda como `openai:gpt-5.4`, así que aquí se
-    // traduce según a dónde se esté llamando.
-    const esOpenRouter = (this.#o.baseUrl ?? "").includes("openrouter.ai");
-    if (!esOpenRouter) return pelado;
-    const proveedor = this.modelo.includes(":") ? this.modelo.slice(0, this.modelo.indexOf(":")) : "openai";
-    return `${proveedor}/${pelado}`;
+    if (this.modelo.includes("/")) return this.modelo;
+    const pelado = this.modelo.startsWith("openai:") ? this.modelo.slice("openai:".length) : this.modelo;
+    return this.#esOpenRouter ? `openai/${pelado}` : pelado;
+  }
+
+  get #esOpenRouter(): boolean {
+    return (this.#o.baseUrl ?? "").includes("openrouter.ai");
   }
 
   async complete(
@@ -134,6 +148,7 @@ export class LlmRemoto implements Llm {
 
     const cuerpo: Record<string, unknown> = {
       model: this.modeloApi,
+      max_tokens: this.#o.maxTokens ?? 2000,
       messages: messages.map((m) => ({
         role: m.rol === "tool" ? "assistant" : m.rol,
         content: m.contenido,
@@ -205,6 +220,13 @@ export interface OpcionesRouterRemoto {
   apiKey: string;
   baseUrl?: string;
   cache?: CacheLlm;
+  maxTokens?: number;
+  /**
+   * Modelo por tarea, si se quiere pisar el catálogo por defecto. Es lo que
+   * permite correr la demo con modelos gratuitos de OpenRouter cuando no hay
+   * saldo, sin tocar una línea de dominio.
+   */
+  modelos?: Partial<Record<TipoTarea, string>>;
   alFallarCache?: (peticion: {
     tarea: TipoTarea;
     modelo: string;
@@ -225,7 +247,7 @@ export class RouterRemoto implements RouterModelos {
   }
 
   route(taskKind: TipoTarea): string {
-    return MODELO_POR_TAREA[taskKind];
+    return this.#o.modelos?.[taskKind] ?? MODELO_POR_TAREA[taskKind];
   }
 
   para(taskKind: TipoTarea): Llm {
@@ -236,6 +258,7 @@ export class RouterRemoto implements RouterModelos {
       modelo,
       apiKey: this.#o.apiKey,
       baseUrl: this.#o.baseUrl,
+      maxTokens: this.#o.maxTokens,
       cache: this.cache,
       alFallarCache: (p) => this.#o.alFallarCache?.({ tarea: taskKind, modelo, ...p }),
     });
