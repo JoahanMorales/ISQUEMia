@@ -13,6 +13,7 @@ import {
   RouterLocal,
   validaEsquemaCodigo,
 } from "./adapters/llm-guionado";
+import { CacheLlm, RouterRemoto } from "./adapters/llm-remoto";
 import { MotorLocal } from "./adapters/motor-local";
 import { ObservabilidadMemoria } from "./adapters/observabilidad-memoria";
 import { RuntimeAsync } from "./adapters/runtime-async";
@@ -57,6 +58,8 @@ export interface OpcionesCorrida {
   tipoOrgano?: TipoOrgano;
   perfusion?: Perfusion | null;
   entorno?: Entorno;
+  /** Caché compartida del LLM remoto; se reaprovecha entre corridas. */
+  cacheLlm?: CacheLlm;
 }
 
 export function crearCorrida(opciones: OpcionesCorrida): Corrida {
@@ -90,7 +93,20 @@ export function crearCorrida(opciones: OpcionesCorrida): Corrida {
         },
       })
     : new WorkspaceEspejo(reloj);
-  const modelos = new RouterLocal();
+  // Slots LLM_NEGOCIACION / LLM_TRIAGE. Con credencial se usa el proveedor
+  // real; el camino síncrono se sirve de la caché por hash (§5.2 principio 4) y
+  // un fallo de caché degrada a reglas de forma visible (G9), nunca en silencio.
+  // OpenAI directo manda sobre OpenRouter: la cuenta de OpenRouter del equipo
+  // está sin saldo y devuelve 402, así que tenerla delante apagaría el modelo.
+  // OpenRouter queda como alternativa si un día falta la llave de OpenAI.
+  const modelos =
+    entorno.OPENAI_API_KEY || entorno.OPENROUTER_API_KEY
+      ? new RouterRemoto({
+          apiKey: (entorno.OPENAI_API_KEY ?? entorno.OPENROUTER_API_KEY)!,
+          baseUrl: entorno.OPENAI_API_KEY ? undefined : "https://openrouter.ai/api/v1",
+          cache: opciones.cacheLlm,
+        })
+      : new RouterLocal();
   const triage = {
     esquema: ESQUEMA_CODIGO_RECHAZO as unknown as Record<string, unknown>,
     valida: validaEsquemaCodigo,

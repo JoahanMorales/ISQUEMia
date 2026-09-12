@@ -90,3 +90,52 @@ Encontrados al levantar la aplicación de verdad, no leyendo el código.
 | P5 muestra la suite | `src/ui/pantallas/metricas.tsx` vía `GET /api/evals` |
 | SSE crudo del event store | `GET /api/eventos` — histórico y cola en vivo, para el inspector y para auditar con `curl` |
 | Cloud Run (Fase 7) | `Dockerfile` (standalone) + `scripts/desplegar.sh`. Una sola instancia y sin estrangular CPU: la corrida vive en memoria y el stream dura minutos |
+
+
+## Adaptadores remotos y despliegue — 12 de septiembre de 2026 (noche)
+
+| Slot | Estado real | Nota |
+|---|---|---|
+| `BUSQUEDA` → **Exa** | **Vivo y verificado** | `adapters/busqueda-exa.ts` + `POST /api/busqueda`. No entra en el camino determinista: el plan de transporte sigue saliendo de las tablas estáticas de §11.1.7 porque alimenta M1 y la comparación con la línea base. Exa **corrobora** — busca fuentes reales sobre la modalidad elegida y P3 las muestra con enlace. Corroborar, no decidir |
+| `LLM_NEGOCIACION`, `LLM_TRIAGE` → **OpenAI** | **Escrito y cableado; sin saldo en la cuenta** | `adapters/llm-remoto.ts`. La llave es válida (lista modelos, `gpt-5.4` y `gpt-5.4-mini` existen) pero la organización devuelve `429 insufficient_quota`. OpenRouter devuelve `402`: tampoco tiene saldo. Mientras tanto el sistema degrada como está diseñado: reglas deterministas + `DEGRADACION_PROVEEDOR` visible (G9) |
+| `WORKSPACE` → Ambiguous AI | Vivo | Sin cambios |
+| `VOZ`, `AUTH`, `RUNTIME`, `ALMACEN` | Locales, adaptador no escrito | Ver abajo |
+
+**El camino síncrono manda sobre el diseño del adaptador de LLM.** Los agentes
+llaman al modelo desde callbacks agendados en el reloj de simulación; una
+promesa ahí dentro reordena los eventos y rompe la reproducibilidad por semilla
+(§0.4.7). Por eso `completeSync` solo lee de una caché por hash de la entrada
+(§5.2 principio 4) y devuelve `null` en fallo, lo que obliga a degradar de forma
+visible. `scripts/precalentar.ts` (`npm run precalentar`) hace el trabajo
+asíncrono una vez: corre la campaña, recoge cada entrada que el modelo habría
+recibido, se las pide de verdad al proveedor y guarda las respuestas en
+`.cache/llm.json`. A partir de ahí esa semilla corre con respuestas reales del
+modelo, con sus tokens y su costo reales en M8, y sigue siendo determinista.
+
+**La suite de evaluación corre siempre en local**, aunque haya credenciales. Un
+modelo remoto con la caché fría degradaría a reglas y hundiría M6 sin que nada
+esté roto: el arnés dejaría de medir el sistema y pasaría a medir el estado de
+una caché.
+
+**Las insignias solo dicen «remoto» si existe el adaptador *y* la credencial.**
+Antes bastaba la llave: con `TRIGGER_SECRET_KEY` en el entorno el panel anunciaba
+`RUNTIME = trigger.dev` aunque el adaptador no exista y la política 40/4 la
+aplique el motor local. Eso es justamente la mentira que las insignias existen
+para evitar, así que ahora cada slot sin adaptador se marca local y el motivo
+dice por qué.
+
+### Despliegue
+
+El build de Vercel fallaba con *No Output Directory named "public"*: `output:
+"standalone"` deja el resultado en `.next/standalone` y Vercel espera empaquetar
+las rutas él mismo. Ahora `standalone` se enciende solo con `DOCKER_BUILD=1`,
+que es lo que pone el `Dockerfile`; `vercel.json` fija el framework y sube a 300 s
+el límite de las dos rutas que mantienen streams abiertos.
+
+**Aviso que vale más que el arreglo:** ISQUEMIA mantiene la corrida en memoria
+del proceso y sirve un stream AG-UI que dura minutos. Eso quiere una instancia
+siempre encendida, que es lo que da Cloud Run con `--min-instances 1
+--max-instances 1 --no-cpu-throttling` (`scripts/desplegar.sh`). En funciones
+serverless dos peticiones pueden caer en instancias distintas y ver dos
+simulaciones distintas. Vercel sirve para enseñar la pantalla; **la demo ante el
+jurado debería ir por Cloud Run**.

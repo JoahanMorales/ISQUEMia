@@ -1,5 +1,5 @@
 {
-  "generado": "2026-09-12T22:00:51.646Z",
+  "generado": "2026-09-12T22:21:58.832Z",
   "semillas": 10,
   "bloqueantes": [
     "M5",
@@ -27,7 +27,7 @@
     "colocadas": 10,
     "baselineColoco": 3,
     "organosSalvados": 7,
-    "mejorQueBaseline": 0
+    "mejorQueBaseline": 3
   },
   "filas": [
     {
@@ -40,7 +40,7 @@
       "secuenciaBaseline": 3,
       "ofertasAgente": 40,
       "ofertasBaseline": 3,
-      "citAgente_h": null,
+      "citAgente_h": 6.478265510163441,
       "citBaseline_h": 11.953617523256689,
       "degradaciones": 5,
       "provisionalYes": 8,
@@ -57,8 +57,8 @@
         "M4_ofertasBaseline": 3,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 1.5,
-        "M7_latenciaCarril_p95_ms": 2.4,
+        "M7_latenciaCarril_p50_ms": 4.9,
+        "M7_latenciaCarril_p95_ms": 7.9,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
       },
@@ -102,7 +102,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 2.4,
+          "valor": 7.9,
           "meta": "p95 < 8 s"
         },
         {
@@ -119,7 +119,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 20
+      "ms": 68
     },
     {
       "semilla": "S-002",
@@ -131,7 +131,7 @@
       "secuenciaBaseline": null,
       "ofertasAgente": 40,
       "ofertasBaseline": 40,
-      "citAgente_h": null,
+      "citAgente_h": 8.363187735885345,
       "citBaseline_h": null,
       "degradaciones": 7,
       "provisionalYes": 13,
@@ -148,8 +148,8 @@
         "M4_ofertasBaseline": 40,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.5,
-        "M7_latenciaCarril_p95_ms": 0.8,
+        "M7_latenciaCarril_p50_ms": 1.7,
+        "M7_latenciaCarril_p95_ms": 2.6,
         "M8_costoPorColocacionUSD": 0.0003,
         "M9_tasaCitacion": 1
       },
@@ -193,7 +193,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.8,
+          "valor": 2.6,
           "meta": "p95 < 8 s"
         },
         {
@@ -210,7 +210,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 7
+      "ms": 24
     },
     {
       "semilla": "S-003",
@@ -222,7 +222,7 @@
       "secuenciaBaseline": 6,
       "ofertasAgente": 40,
       "ofertasBaseline": 6,
-      "citAgente_h": null,
+      "citAgente_h": 4.404715747275043,
       "citBaseline_h": 8.666437969497265,
       "degradaciones": 3,
       "provisionalYes": 13,
@@ -239,8 +239,8 @@
         "M4_ofertasBaseline": 6,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.5,
-        "M7_latenciaCarril_p95_ms": 0.8,
+        "M7_latenciaCarril_p50_ms": 1.7,
+        "M7_latenciaCarril_p95_ms": 2.4,
         "M8_costoPorColocacionUSD": 0.0003,
         "M9_tasaCitacion": 1
       },
@@ -284,7 +284,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.8,
+          "valor": 2.4,
           "meta": "p95 < 8 s"
         },
         {
@@ -301,7 +301,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 5
+      "ms": 17
     },
     {
       "semilla": "S-004",
@@ -313,7 +313,7 @@
       "secuenciaBaseline": null,
       "ofertasAgente": 40,
       "ofertasBaseline": 40,
-      "citAgente_h": null,
+      "citAgente_h": 6.215659781717805,
       "citBaseline_h": null,
       "degradaciones": 2,
       "provisionalYes": 4,
@@ -330,8 +330,8 @@
         "M4_ofertasBaseline": 40,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.3,
-        "M7_latenciaCarril_p95_ms": 0.7,
+        "M7_latenciaCarril_p50_ms": 1.1,
+        "M7_latenciaCarril_p95_ms": 2,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
       },
@@ -375,7 +375,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.7,
+          "valor": 2,
           "meta": "p95 < 8 s"
         },
         {
@@ -392,7 +392,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 10
+      "ms": 29
     },
     {
       "semilla": "S-005",
@@ -404,7 +404,7 @@
       "secuenciaBaseline": null,
       "ofertasAgente": 40,
       "ofertasBaseline": 40,
-      "citAgente_h": null,
+      "citAgente_h": 6.586319556260888,
       "citBaseline_h": null,
       "degradaciones": 7,
       "provisionalYes": 13,
@@ -421,8 +421,8 @@
         "M4_ofertasBaseline": 40,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.6,
-        "M7_latenciaCarril_p95_ms": 0.8,
+        "M7_latenciaCarril_p50_ms": 1.8,
+        "M7_latenciaCarril_p95_ms": 2.7,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
       },
@@ -466,7 +466,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.8,
+          "valor": 2.7,
           "meta": "p95 < 8 s"
         },
         {
@@ -483,7 +483,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 5
+      "ms": 16
     },
     {
       "semilla": "S-006",
@@ -495,7 +495,7 @@
       "secuenciaBaseline": null,
       "ofertasAgente": 40,
       "ofertasBaseline": 40,
-      "citAgente_h": null,
+      "citAgente_h": 5.940402023677696,
       "citBaseline_h": null,
       "degradaciones": 8,
       "provisionalYes": 10,
@@ -512,8 +512,8 @@
         "M4_ofertasBaseline": 40,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.4,
-        "M7_latenciaCarril_p95_ms": 0.6,
+        "M7_latenciaCarril_p50_ms": 1.1,
+        "M7_latenciaCarril_p95_ms": 1.9,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
       },
@@ -557,7 +557,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.6,
+          "valor": 1.9,
           "meta": "p95 < 8 s"
         },
         {
@@ -574,7 +574,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 6
+      "ms": 17
     },
     {
       "semilla": "S-007",
@@ -586,7 +586,7 @@
       "secuenciaBaseline": null,
       "ofertasAgente": 40,
       "ofertasBaseline": 40,
-      "citAgente_h": null,
+      "citAgente_h": 6.78591945202357,
       "citBaseline_h": null,
       "degradaciones": 7,
       "provisionalYes": 11,
@@ -603,8 +603,8 @@
         "M4_ofertasBaseline": 40,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.3,
-        "M7_latenciaCarril_p95_ms": 0.6,
+        "M7_latenciaCarril_p50_ms": 1,
+        "M7_latenciaCarril_p95_ms": 1.9,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
       },
@@ -648,7 +648,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.6,
+          "valor": 1.9,
           "meta": "p95 < 8 s"
         },
         {
@@ -665,7 +665,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 7
+      "ms": 18
     },
     {
       "semilla": "S-008",
@@ -677,7 +677,7 @@
       "secuenciaBaseline": null,
       "ofertasAgente": 40,
       "ofertasBaseline": 40,
-      "citAgente_h": null,
+      "citAgente_h": 5.9778553759920285,
       "citBaseline_h": null,
       "degradaciones": 6,
       "provisionalYes": 13,
@@ -694,8 +694,8 @@
         "M4_ofertasBaseline": 40,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.5,
-        "M7_latenciaCarril_p95_ms": 0.7,
+        "M7_latenciaCarril_p50_ms": 1.4,
+        "M7_latenciaCarril_p95_ms": 2,
         "M8_costoPorColocacionUSD": 0.0003,
         "M9_tasaCitacion": 1
       },
@@ -739,7 +739,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.7,
+          "valor": 2,
           "meta": "p95 < 8 s"
         },
         {
@@ -756,7 +756,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 5
+      "ms": 14
     },
     {
       "semilla": "S-009",
@@ -768,7 +768,7 @@
       "secuenciaBaseline": null,
       "ofertasAgente": 40,
       "ofertasBaseline": 40,
-      "citAgente_h": null,
+      "citAgente_h": 6.133094324104805,
       "citBaseline_h": null,
       "degradaciones": 1,
       "provisionalYes": 10,
@@ -785,8 +785,8 @@
         "M4_ofertasBaseline": 40,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.4,
-        "M7_latenciaCarril_p95_ms": 0.5,
+        "M7_latenciaCarril_p50_ms": 1.2,
+        "M7_latenciaCarril_p95_ms": 1.7,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
       },
@@ -830,7 +830,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.5,
+          "valor": 1.7,
           "meta": "p95 < 8 s"
         },
         {
@@ -847,7 +847,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 5
+      "ms": 15
     },
     {
       "semilla": "S-010",
@@ -859,7 +859,7 @@
       "secuenciaBaseline": 6,
       "ofertasAgente": 40,
       "ofertasBaseline": 6,
-      "citAgente_h": null,
+      "citAgente_h": 6.14978610971995,
       "citBaseline_h": 10.335563887497727,
       "degradaciones": 3,
       "provisionalYes": 6,
@@ -876,8 +876,8 @@
         "M4_ofertasBaseline": 6,
         "M5_tasaCompletitudCarril": 1,
         "M6_precisionUsoHerramientas": 1,
-        "M7_latenciaCarril_p50_ms": 0.3,
-        "M7_latenciaCarril_p95_ms": 0.5,
+        "M7_latenciaCarril_p50_ms": 0.9,
+        "M7_latenciaCarril_p95_ms": 1.6,
         "M8_costoPorColocacionUSD": 0.0004,
         "M9_tasaCitacion": 1
       },
@@ -921,7 +921,7 @@
         {
           "metrica": "M7",
           "cumple": true,
-          "valor": 0.5,
+          "valor": 1.6,
           "meta": "p95 < 8 s"
         },
         {
@@ -938,7 +938,7 @@
         }
       ],
       "bloqueantesEnMeta": true,
-      "ms": 5
+      "ms": 14
     }
   ]
 }

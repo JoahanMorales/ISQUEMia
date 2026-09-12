@@ -15,10 +15,13 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { cargarEnvLocal } from "./cargar-env";
 import { crearCorrida } from "../src/composicion";
 import { METAS, evaluarMetas } from "../src/orquestacion/metricas";
 import type { ResultadoCorrida } from "../src/orquestacion/corrida";
 import type { NueveMetricas } from "../src/domain/tipos";
+
+cargarEnvLocal();
 
 /** Las diez semillas de la suite. Fijas: cambiarlas es cambiar la medición. */
 export const SEMILLAS = [
@@ -75,11 +78,21 @@ export interface ResultadosEval {
   filas: FilaEval[];
 }
 
+/**
+ * La suite mide el núcleo determinista, así que corre siempre con los
+ * adaptadores locales aunque haya credenciales en el entorno. Un modelo remoto
+ * con la caché fría degradaría a reglas (G9) y hundiría M6 sin que nada esté
+ * roto: el arnés de regresión dejaría de medir el sistema y pasaría a medir el
+ * estado de una caché. La ruta remota se ejercita en la corrida en vivo y en
+ * `scripts/precalentar.ts`.
+ */
+const ENTORNO_DETERMINISTA = {} as const;
+
 function correrSemilla(semilla: string): FilaEval {
   // lint-reloj: permitido — el arnés mide tiempo de pared para reportar cuánto
   // tarda la suite; el mundo simulado sigue moviéndose solo con el reloj sembrado.
   const t0 = Date.now(); // lint-reloj: permitido — duración real de la suite
-  const c = crearCorrida({ semilla });
+  const c = crearCorrida({ semilla, entorno: ENTORNO_DETERMINISTA });
 
   let resultado: ResultadoCorrida | null = null;
   c.isquemia.iniciar((r) => (resultado = r));
@@ -104,7 +117,7 @@ function correrSemilla(semilla: string): FilaEval {
     secuenciaBaseline: r.baseline.secuenciaFinal,
     ofertasAgente: r.campana.ofertasEmitidas,
     ofertasBaseline: r.baseline.ofertasEmitidas,
-    citAgente_h: r.citAgente_h ?? null,
+    citAgente_h: r.campana.citFinal_h ?? null,
     citBaseline_h: r.baseline.cit_h,
     degradaciones: r.campana.degradaciones,
     provisionalYes: r.campana.provisionalYesTotales,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import type { EstadoPanel, OpcionTransporteExt } from "../../agui/estado";
 import { horas, minutos, usd } from "../formato";
 
@@ -57,8 +58,97 @@ export function Transporte({ estado }: { estado: EstadoPanel }) {
           </>
         )}
       </div>
+
+      {estado.transporte && <Corroboracion estado={estado} />}
     </div>
   );
+}
+
+/**
+ * Corroboración con fuentes reales (slot `BUSQUEDA`, Exa).
+ *
+ * El plan de arriba sale de las tablas estáticas de §11.1.7 y es determinista
+ * por semilla — tiene que serlo, porque alimenta M1 y la comparación con la
+ * línea base. Esto no lo toca: busca fuentes sobre la modalidad elegida y las
+ * pone al lado, con su enlace, para que el juez pueda pinchar en vez de creer.
+ */
+function Corroboracion({ estado }: { estado: EstadoPanel }) {
+  const mejor = estado.transporte?.find((o) => o.viable) ?? null;
+  const [estadoBusqueda, setEstadoBusqueda] = useState<
+    { fase: "cargando" } | { fase: "ok"; remoto: boolean; resultados: Fuente[] } | { fase: "error"; error: string }
+  >({ fase: "cargando" });
+
+  const consulta = mejor
+    ? `${mejor.modalidad} organ transport logistics cold ischemia time transplant ${estado.organo.etiqueta}`
+    : null;
+
+  useEffect(() => {
+    if (!consulta) return;
+    let vivo = true;
+    void fetch("/api/busqueda", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ consulta }),
+    })
+      .then((r) => r.json())
+      .then((j: { ok: boolean; remoto?: boolean; resultados?: Fuente[]; error?: string }) => {
+        if (!vivo) return;
+        if (j.ok) setEstadoBusqueda({ fase: "ok", remoto: Boolean(j.remoto), resultados: j.resultados ?? [] });
+        else setEstadoBusqueda({ fase: "error", error: j.error ?? "sin respuesta" });
+      })
+      .catch((e) => vivo && setEstadoBusqueda({ fase: "error", error: String(e) }));
+    return () => {
+      vivo = false;
+    };
+  }, [consulta]);
+
+  if (!mejor) return null;
+
+  return (
+    <div className="panel" style={{ marginTop: 16 }}>
+      <div className="panel-cab">
+        <span className="panel-tit">Corroboration · {mejor.modalidad}</span>
+        <span className={estadoBusqueda.fase === "ok" && estadoBusqueda.remoto ? "insignia remoto" : "insignia"}>
+          {estadoBusqueda.fase === "ok" && estadoBusqueda.remoto ? "exa · live" : "static corpus"}
+        </span>
+      </div>
+
+      {estadoBusqueda.fase === "cargando" && <div className="vacio">Looking for sources…</div>}
+
+      {estadoBusqueda.fase === "error" && (
+        <div className="vacio" style={{ color: "var(--critico)" }}>
+          Search degraded: {estadoBusqueda.error}. The plan above is unaffected — it never depended on this.
+        </div>
+      )}
+
+      {estadoBusqueda.fase === "ok" && estadoBusqueda.resultados.length === 0 && (
+        <div className="vacio">No external sources configured. The plan comes from the static tables of §11.1.7.</div>
+      )}
+
+      {estadoBusqueda.fase === "ok" && estadoBusqueda.resultados.length > 0 && (
+        <div className="panel-cuerpo">
+          <div className="kpi-nota" style={{ marginBottom: 10 }}>
+            The routing decision above is deterministic and comes from the static tables. These are live external
+            sources on the chosen modality — they corroborate, they do not decide.
+          </div>
+          {estadoBusqueda.resultados.map((f) => (
+            <div key={f.url} className="cita" style={{ marginBottom: 8 }}>
+              <a href={f.url} target="_blank" rel="noreferrer" style={{ fontWeight: 600 }}>
+                {f.titulo}
+              </a>
+              <div style={{ fontSize: 11.5, color: "var(--texto-2)", marginTop: 4 }}>{f.extracto}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface Fuente {
+  titulo: string;
+  url: string;
+  extracto: string;
 }
 
 /** Componente declarativo que el agente invoca como generative UI. */

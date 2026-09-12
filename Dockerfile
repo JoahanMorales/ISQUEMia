@@ -13,6 +13,8 @@ RUN npm ci
 FROM node:22-slim AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
+# Enciende `output: "standalone"` en next.config.ts.
+ENV DOCKER_BUILD=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # La suite de diez semillas corre dentro del build: si M5, M6 o M9 caen de meta,

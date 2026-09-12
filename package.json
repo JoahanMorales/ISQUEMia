@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "check": "npm run lint:reloj && npm run lint:capas && npm run typecheck && npm run test && npm run evals",
     "lint:capas": "node scripts/lint-capas.mjs",
-    "evals": "tsx scripts/evals.ts"
+    "evals": "tsx scripts/evals.ts",
+    "precalentar": "tsx scripts/precalentar.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.2",

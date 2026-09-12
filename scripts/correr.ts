@@ -5,9 +5,12 @@
  *   npx tsx scripts/correr.ts S-001
  */
 
+import { cargarEnvLocal } from "./cargar-env";
 import { crearCorrida } from "../src/composicion";
 import { evaluarMetas } from "../src/orquestacion/metricas";
 import type { ResultadoCorrida } from "../src/orquestacion/corrida";
+
+cargarEnvLocal();
 
 const semilla = process.argv[2] ?? "S-001";
 const c = crearCorrida({ semilla });
