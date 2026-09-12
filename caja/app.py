@@ -271,7 +271,7 @@ def main():
     p.add_argument("--llegada", type=int, default=25,
                    help="segundos reales hasta llegar a destino")
     p.add_argument("--semilla", type=int, default=config.SEMILLA)
-    p.add_argument("--lcd", default=None, choices=["auto", "i2c", "gpio", "sim"])
+    p.add_argument("--lcd", default=None, choices=["auto", "i2c", "gpio", "sim", "off"])
     args = p.parse_args()
 
     if args.lcd:

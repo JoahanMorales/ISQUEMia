@@ -19,20 +19,85 @@ import time
 from . import config
 
 
+class _PCA9685:
+    """Driver directo del PCA9685 por SMBus, sin Blinka.
+
+    adafruit_servokit funciona, pero arrastra Blinka, que a su vez toma
+    Jetson.GPIO y le fija un modo de numeracion. Si la LCD ya esta corriendo
+    por GPIO, el segundo en llegar revienta con "A different mode has already
+    been set!" y los servos se quedan sin moverse en plena demo.
+
+    Hablarle al chip por I2C evita el choque: son cuatro registros.
+    """
+
+    MODE1 = 0x00
+    PRESCALE = 0xFE
+    LED0_ON_L = 0x06
+    FRECUENCIA_HZ = 50           # estandar de servo: periodo de 20 ms
+
+    def __init__(self, bus=None, direccion=None):
+        from Adafruit_PureIO.smbus import SMBus
+
+        self.direccion = direccion if direccion is not None else config.SERVO_I2C_DIR
+        self.bus = SMBus(bus if bus is not None else config.I2C_BUS)
+        self._configurar_frecuencia(self.FRECUENCIA_HZ)
+
+    def _escribir(self, registro, valor):
+        self.bus.write_byte_data(self.direccion, registro, valor & 0xFF)
+
+    def _leer(self, registro):
+        return self.bus.read_byte_data(self.direccion, registro)
+
+    def _configurar_frecuencia(self, hz):
+        prescale = int(round(25000000.0 / (4096 * hz)) - 1)
+        anterior = self._leer(self.MODE1)
+        self._escribir(self.MODE1, (anterior & 0x7F) | 0x10)   # dormir
+        self._escribir(self.PRESCALE, prescale)
+        self._escribir(self.MODE1, anterior)
+        time.sleep(0.005)
+        self._escribir(self.MODE1, anterior | 0xA0)            # reiniciar + autoincremento
+
+    def pulso_us(self, canal, microsegundos):
+        """Ancho de pulso en microsegundos sobre un periodo de 20 ms."""
+        cuentas = int(round(microsegundos * 4096 / 20000.0))
+        cuentas = max(0, min(4095, cuentas))
+        base = self.LED0_ON_L + 4 * canal
+        self._escribir(base, 0)
+        self._escribir(base + 1, 0)
+        self._escribir(base + 2, cuentas & 0xFF)
+        self._escribir(base + 3, cuentas >> 8)
+
+    def angulo(self, canal, grados, rango_us):
+        minimo, maximo = rango_us
+        grados = max(0, min(180, grados))
+        self.pulso_us(canal, minimo + (grados / 180.0) * (maximo - minimo))
+
+    def soltar(self, canal):
+        """Deja de mandar pulso: el servo suelta el par y deja de zumbar."""
+        base = self.LED0_ON_L + 4 * canal
+        for i, v in enumerate((0, 0, 0, 0x10)):
+            self._escribir(base + i, v)
+
+    def cerrar(self):
+        try:
+            self.bus.close()
+        except Exception:
+            pass
+
+
 class PestilloCaja:
     def __init__(self, bus=None):
         self.bus = bus
         self.real = False
         self.abierta = False
         try:
-            from adafruit_servokit import ServoKit
-            self.kit = ServoKit(channels=16, address=config.SERVO_I2C_DIR)
-            for canal in (config.SERVO_CANAL_PESTILLO, config.SERVO_CANAL_TAPA):
-                self.kit.servo[canal].set_pulse_width_range(*config.SERVO_PULSO_US)
+            self.pca = _PCA9685()
             self.real = True
-            print("[servos] PCA9685 activo en 0x%02X" % config.SERVO_I2C_DIR)
+            print("[servos] PCA9685 activo en 0x%02X (canales %d y %d)"
+                  % (config.SERVO_I2C_DIR, config.SERVO_CANAL_PESTILLO,
+                     config.SERVO_CANAL_TAPA))
         except Exception as e:
-            self.kit = None
+            self.pca = None
             print("[servos] sin hardware, movimientos simulados: %s" % e)
 
         self._angulos = {config.SERVO_CANAL_PESTILLO: config.SERVO_ANG_CERRADO,
@@ -58,7 +123,12 @@ class PestilloCaja:
         self._angulos[canal] = angulo
         if self.real:
             try:
-                self.kit.servo[canal].angle = angulo
+                rango = (config.SERVO_PULSO_PAN
+                         if canal == config.SERVO_CANAL_PAN
+                         else config.SERVO_PULSO_TILT
+                         if canal == config.SERVO_CANAL_TILT
+                         else config.SERVO_PULSO_US)
+                self.pca.angulo(canal, angulo, rango)
             except Exception as e:
                 print("[servos] error en canal %d: %s" % (canal, e))
                 self.real = False
@@ -121,7 +191,8 @@ class PestilloCaja:
         if self.real:
             try:
                 for canal in (config.SERVO_CANAL_PESTILLO, config.SERVO_CANAL_TAPA):
-                    self.kit.servo[canal].angle = None   # deja de dar par
+                    self.pca.soltar(canal)
+                self.pca.cerrar()
             except Exception:
                 pass
 
@@ -137,24 +208,19 @@ class PanTiltCamara:
     def __init__(self):
         self.real = False
         try:
-            from adafruit_servokit import ServoKit
-            self.kit = ServoKit(channels=16, address=config.SERVO_I2C_DIR)
-            self.kit.servo[config.SERVO_CANAL_PAN].set_pulse_width_range(
-                *config.SERVO_PULSO_PAN)
-            self.kit.servo[config.SERVO_CANAL_TILT].set_pulse_width_range(
-                *config.SERVO_PULSO_TILT)
+            self.pca = _PCA9685()
             self.real = True
         except Exception as e:
-            self.kit = None
+            self.pca = None
             print("[pantilt] sin hardware: %s" % e)
 
     def apuntar(self, pan=None, tilt=None):
         if not self.real:
             return
         if pan is not None:
-            self.kit.servo[config.SERVO_CANAL_PAN].angle = max(0, min(180, int(pan)))
+            self.pca.angulo(config.SERVO_CANAL_PAN, int(pan), config.SERVO_PULSO_PAN)
         if tilt is not None:
-            self.kit.servo[config.SERVO_CANAL_TILT].angle = max(0, min(180, int(tilt)))
+            self.pca.angulo(config.SERVO_CANAL_TILT, int(tilt), config.SERVO_PULSO_TILT)
 
     def reposo(self):
         self.apuntar(config.SERVO_PAN_REPOSO, config.SERVO_TILT_REPOSO)

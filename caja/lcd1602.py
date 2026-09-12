@@ -174,6 +174,25 @@ class _BackendGPIO:
             pass
 
 
+class _BackendOff:
+    """La LCD desactivada: no toca hardware y no imprime. Para trabajar en la
+    camara y los servos sin que la pantalla estorbe ni ensucie la consola."""
+
+    nombre = "off"
+
+    def enviar_nibble(self, nibble, rs):
+        pass
+
+    def set_luz(self, encendida):
+        pass
+
+    def cerrar(self):
+        pass
+
+    def pintar(self, buffer_):
+        pass
+
+
 class _BackendSim:
     """Sin hardware: dibuja la pantalla en consola con marco de 16x2."""
 
@@ -215,7 +234,7 @@ class LCD1602:
         self._backend = self._elegir_backend(
             backend or config.LCD_BACKEND, bus, direccion)
         self.modo = self._backend.nombre
-        if self.modo != "sim":
+        if self.modo not in ("sim", "off"):
             self._inicializar_hd44780()
             self._cargar_glifos()
         self.limpiar()
@@ -226,6 +245,7 @@ class LCD1602:
             "i2c": lambda: _BackendI2C(bus, direccion or config.LCD_I2C_DIR),
             "gpio": lambda: _BackendGPIO(),
             "sim": lambda: _BackendSim(),
+            "off": lambda: _BackendOff(),
         }
         if deseado != "auto":
             if deseado not in intentos:
@@ -288,10 +308,10 @@ class LCD1602:
     # --- API publica ------------------------------------------------------
     def limpiar(self):
         self._buffer = [""] * self.filas
-        if self.modo != "sim":
-            self._comando(LIMPIAR)
-        else:
+        if self.modo in ("sim", "off"):
             self._backend.pintar(self._buffer)
+        else:
+            self._comando(LIMPIAR)
 
     def escribir(self, texto, fila=0, columna=0):
         """Escribe una linea. Recorta a 16 y rellena con espacios el resto."""
@@ -307,7 +327,7 @@ class LCD1602:
             return                      # no reescribas lo que ya esta puesto
         self._buffer[fila] = nueva
 
-        if self.modo == "sim":
+        if self.modo in ("sim", "off"):
             self._backend.pintar(self._buffer)
             return
         self._comando(SET_DDRAM | (FILA_OFFSET[fila] + columna))
